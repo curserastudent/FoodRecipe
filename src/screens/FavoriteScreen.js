@@ -20,10 +20,6 @@ export default function FavoriteScreen() {
   // Assuming you have a similar structure for recipes in your Redux store
   const favoriteRecipes = useSelector((state) => state.favorites);
   const favoriteRecipesList = favoriteRecipes?.favoriterecipes || [];
-  console.log(favoriteRecipes.favoriterecipes);
-  console.log('favoriteRecipesList',favoriteRecipesList);
-  
-  
 
   if (favoriteRecipesList.length === 0) {
     return (
@@ -38,7 +34,8 @@ export default function FavoriteScreen() {
             borderRadius: 5,
             marginTop: 10,
             width: 100,
-            alignItems: "center ",
+            alignItems: "center",
+            marginLeft: 20,
           }}
         >
           <Text style={{ color: "#fff" }}>Go back</Text>
@@ -50,13 +47,39 @@ export default function FavoriteScreen() {
   return (
     <>
       {/* Heading */}
-      <View testID="FavoriteRecipes">
+      <View testID="favoriteRecipes">
         <Text
           style={{ fontSize: hp(3.8), marginTop: hp(4), marginLeft: 20 }}
           className="font-semibold text-neutral-600"
         >
           My Favorite Recipes
         </Text>
+
+        <FlatList
+            data={favoriteRecipesList}
+            contentContainerStyle={styles.listContentContainer}
+            keyExtractor={(item) => item.idFood} // Update the key according to your article data
+            renderItem={({ item }) => (
+            <TouchableOpacity
+                style={styles.cardContainer}
+                onPress={() => navigation.navigate("RecipeDetail", RecipeDetail)} // Navigate to the article detail screen
+            >
+                <Image
+                source={{ uri: item.recipeImage }} // Assuming your articles have a thumbnail field
+                style={styles.recipeImage}
+                />
+                <Text style={styles.recipeTitle}>
+                {item.recipeName.length > 20
+                    ? `${item.recipeName.slice(0, 20)}...`
+                    : item.recipeName}
+                </Text>
+            </TouchableOpacity>
+            )}
+        />
+
+
+
+
       </View>
     
       <TouchableOpacity
@@ -71,6 +94,12 @@ export default function FavoriteScreen() {
           marginLeft: 20,
         }}
       >
+
+
+
+
+
+
         <Text style={{ color: "#fff" }}>Go back</Text>
       </TouchableOpacity>
     

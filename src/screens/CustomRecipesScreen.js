@@ -50,9 +50,12 @@ import {
       >
         {/* Recipe Image */}
         <View style={styles.imageContainer} testID="imageContainer">
-        {recipe.image && (
-            <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
-          )}
+            {recipe.recipeImage && (
+                <Image
+                source={{ uri: recipe.recipeImage }}
+                style={[styles.recipeImage, { height: hp(30) }]}
+                />
+            )}
         </View>
         <View
           style={styles.topButtonsContainer} testID="topButtonsContainer"
@@ -74,10 +77,30 @@ import {
         {/* Recipe Details */}
         <View style={styles.contentContainer} testID="contentContainer">
         <Text style={styles.recipeTitle}>{recipe.title}</Text>
-  <View style={styles.sectionContainer}>
-    <Text style={styles.sectionTitle}>Content</Text>
-    <Text style={styles.contentText}>{recipe.description}</Text>
-  </View>
+            <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>Content</Text>
+                <Text style={styles.contentText}>{recipe.description}</Text>
+            </View>
+
+
+            <View style={styles.topButtonsContainer} testID="topButtonsContainer">
+            <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={styles.backButton}
+            >
+                <Text>GoBack</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={handleToggleFavorite}
+                style={styles.favoriteButton}
+            >
+                <Text>{isFavourite ? "♥" : "♡"}</Text>
+            </TouchableOpacity>
+            </View>
+
+
+
         </View>
       </ScrollView>
     );
