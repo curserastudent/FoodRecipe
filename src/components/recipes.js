@@ -51,20 +51,20 @@ import {
           <Image
             source={{ uri: item.recipeImage }}
             style={[
-              styles.articleImage,
+              styles.recipeImage,
               { height: index % 3 === 0 ? hp(25) : hp(35) },
             ]}
           />
   
           {/* Nombre */}
-          <Text style={styles.articleText}>
+          <Text style={styles.recipeText}>
             {item.recipeName.length > 20
               ? item.recipeName.slice(0, 20) + "..."
               : item.recipeName}
           </Text>
   
           {/* Descripción */}
-          <Text style={styles.articleDescription}>
+          <Text style={styles.recipedescripcion}>
             {item.recipeInstructions.length > 40
               ? item.recipeInstructions.slice(0, 40) + "..."
               : item.recipeInstructions}
@@ -84,19 +84,19 @@ import {
       marginBottom: hp(1.5),
       flex: 1,
     },
-    articleImage: {
+    recipeImage: {
       width: "100%",
       borderRadius: 35,
       backgroundColor: "rgba(0,0,0,0.05)",
     },
-    articleText: {
+    recipeText: {
       fontSize: hp(1.5),
       fontWeight: "600",
       color: "#52525B",
       marginLeft: wp(2),
       marginTop: hp(0.5),
     },
-    articleDescription: {
+    recipedescripcion: {
       fontSize: hp(1.2),
       color: "#6B7280",
       marginLeft: wp(2),

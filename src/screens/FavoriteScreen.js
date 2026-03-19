@@ -19,7 +19,7 @@ export default function FavoriteScreen() {
 
   // Assuming you have a similar structure for recipes in your Redux store
   const favoriteRecipes = useSelector((state) => state.favorites);
-  const favoriteRecipesList = favoriteRecipes?.favoriterecipes || [];
+  const favoriteRecipesList = favoriteRecipes?.favoriteRecipes || [];
 
   if (favoriteRecipesList.length === 0) {
     return (
@@ -48,6 +48,7 @@ export default function FavoriteScreen() {
     <>
       {/* Heading */}
       <View testID="favoriteRecipes">
+        
         <Text
           style={{ fontSize: hp(3.8), marginTop: hp(4), marginLeft: 20 }}
           className="font-semibold text-neutral-600"
@@ -58,14 +59,33 @@ export default function FavoriteScreen() {
         <FlatList
             data={favoriteRecipesList}
             contentContainerStyle={styles.listContentContainer}
-            keyExtractor={(item) => item.idFood} // Update the key according to your article data
+            keyExtractor={(item) => item.idFood} // Update the key according to your recipe data
+            showsVerticalScrollIndicator={false}
+
+            ListFooterComponent={
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={{
+                    backgroundColor: "#2563EB",
+                    padding: 10,
+                    borderRadius: 5,
+                    marginTop: 10,
+                    width: 100,
+                    alignItems: "center",
+                    alignSelf: "center",
+                  }}
+                >
+                  <Text style={{ color: "#fff" }}>Go back</Text>
+                </TouchableOpacity>
+              }
+
             renderItem={({ item }) => (
             <TouchableOpacity
                 style={styles.cardContainer}
-                onPress={() => navigation.navigate("RecipeDetail", RecipeDetail)} // Navigate to the article detail screen
+                onPress={() => navigation.navigate("RecipeDetail", { ...item })} // Navigate to the recipe detail screen
             >
                 <Image
-                source={{ uri: item.recipeImage }} // Assuming your articles have a thumbnail field
+                source={{ uri: item.recipeImage }} // Assuming your recipes have a thumbnail field
                 style={styles.recipeImage}
                 />
                 <Text style={styles.recipeTitle}>
@@ -77,31 +97,7 @@ export default function FavoriteScreen() {
             )}
         />
 
-
-
-
       </View>
-    
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={{
-          backgroundColor: "#2563EB",
-          padding: 10,
-          borderRadius: 5,
-          marginTop: 10,
-          width: 100,
-          alignItems: "center",
-          marginLeft: 20,
-        }}
-      >
-
-
-
-
-
-
-        <Text style={{ color: "#fff" }}>Go back</Text>
-      </TouchableOpacity>
     
     </>
   );

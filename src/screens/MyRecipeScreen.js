@@ -7,9 +7,9 @@ import {
     StyleSheet,
     ActivityIndicator,
   } from "react-native";
-  import React, { useEffect, useState } from "react";
+  import React, { useCallback, useState } from "react";
   import AsyncStorage from "@react-native-async-storage/async-storage";
-  import { useNavigation } from "@react-navigation/native";
+  import { useNavigation, useFocusEffect } from "@react-navigation/native";
   import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -19,24 +19,29 @@ import {
     const navigation = useNavigation();
     const [recipes, setrecipes] = useState([]);
     const [loading, setLoading] = useState(true);
-  
-    useEffect(() => {
-      const fetchrecipes = async () => {
-        try {
-          const storedRecipes = await AsyncStorage.getItem("customrecipes");
-          if (storedRecipes) {
-            setrecipes(JSON.parse(storedRecipes));
-          }
-        } catch (error) {
-          console.log("Error fetching recipes:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      fetchrecipes();
-    }, []);
-  
+
+    useFocusEffect(
+        useCallback(() => {
+            const fetchrecipes = async () => {
+            try {
+                setLoading(true);
+                const storedRecipes = await AsyncStorage.getItem("customrecipes");
+                if (storedRecipes) {
+                setrecipes(JSON.parse(storedRecipes));
+                } else {
+                setrecipes([]);
+                }
+            } catch (error) {
+                console.log("Error fetching recipes:", error);
+            } finally {
+                setLoading(false);
+            }
+            };
+
+            fetchrecipes();
+        }, [])
+    );
+
     const handleAddrecipe = () => {
       navigation.navigate("RecipesFormScreen");
     };
@@ -173,13 +178,12 @@ import {
       color: "#4F75FF",
     },
     addButton: {
-      backgroundColor: "#4F75FF",
-      padding: wp(.7),
-      alignItems: "center",
-      borderRadius: 5,
-      width:300,
-     marginLeft:500
-      // marginBottom: hp(2),
+        backgroundColor: "#4F75FF",
+        padding: wp(1),
+        alignItems: "center",
+        borderRadius: 5,
+        alignSelf: "center", 
+        marginBottom: hp(2), 
     },
     addButtonText: {
       color: "#fff",
@@ -192,8 +196,12 @@ import {
       display:'flex',
       alignItems:'center',
       justifyContent:'center',
-      flexDirection:'row',
-      flexWrap:'wrap'
+
+
+      paddingBottom: hp(4),
+      alignItems: "center",
+
+
     },
     norecipesText: {
       textAlign: "center",
@@ -202,17 +210,19 @@ import {
       marginTop: hp(5),
     },
     recipeCard: {
-      width: 400, // Make recipe card width more compact
-      height: 300, // Adjust the height of the card to fit content
-      backgroundColor: "#fff",
-      padding: wp(3),
-      borderRadius: 8,
-      marginBottom: hp(2),
-      shadowColor: "#000",
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      shadowOffset: { width: 0, height: 2 },
-      elevation: 3, // for Android shadow
+        width: 400,
+        height: 350,
+        backgroundColor: "#fff",
+        padding: wp(3),
+        borderRadius: 8,
+        marginBottom: hp(2),
+        marginHorizontal: wp(2), // 👈 separación lateral
+        marginTop: hp(1), // 👈 separación superior
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
+        elevation: 3,
     },
     recipeImage: {
       width: 300, // Set width for recipe image
@@ -234,7 +244,7 @@ import {
     actionButtonsContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
-      marginTop: hp(1),
+      marginTop: hp(0.5),
     },
     editButton: {
       backgroundColor: "#34D399",
